@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Game Field</title>
+    <style>
+        /* Стили для игрового поля */
+        #game-field {
+            width: 1000px;
+            height: 1000px;
+            border: 2px solid black;
+            position: relative; /* Для позиционирования объекта внутри */
+            margin: 20px auto;
+            background-color: #f0f0f0;
+        }
+
+        /* Стили для объекта */
+        #game-object {
+            width: 50px; /* Размер объекта */
+            height: 50px;
+            position: absolute; /* Для перемещения по полю */
+            background-image: url('https://catwar.su/cw3/things/7704.png');
+            background-size: cover; /* Увеличение картинки до размера объекта */
+            cursor: pointer; /* Указатель мыши для интерактивности */
+        }
+    </style>
+</head>
+<body>
+    <!-- Игровое поле -->
+    <div id="game-field">
+        <!-- Объект, который будет перемещаться -->
+        <div id="game-object"></div>
+    </div>
+
+    <script>
+        // Получаем элементы поля и объекта
+        const gameField = document.getElementById('game-field');
+        const gameObject = document.getElementById('game-object');
+
+        // Обработчик клика по игровому полю
+        gameField.addEventListener('click', (event) => {
+            // Координаты клика относительно поля
+            const fieldRect = gameField.getBoundingClientRect();
+            const clickX = event.clientX - fieldRect.left;
+            const clickY = event.clientY - fieldRect.top;
+
+            // Вычисление новых координат объекта с учетом его размера
+            const objectWidth = gameObject.offsetWidth;
+            const objectHeight = gameObject.offsetHeight;
+
+            let newX = clickX - objectWidth / 2;
+            let newY = clickY - objectHeight / 2;
+
+            // Ограничение координат, чтобы объект оставался внутри поля
+            newX = Math.max(0, Math.min(newX, gameField.offsetWidth - objectWidth));
+            newY = Math.max(0, Math.min(newY, gameField.offsetHeight - objectHeight));
+
+            // Перемещаем объект на новые координаты
+            gameObject.style.left = `${newX}px`;
+            gameObject.style.top = `${newY}px`;
+        });
+    </script>
+</body>
+</html>
